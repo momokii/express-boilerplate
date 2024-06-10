@@ -1,0 +1,30 @@
+{
+    "env": {
+        "browser": true,
+        "commonjs": true,
+        "es2021": true
+    },
+    "extends": "eslint:recommended",
+    "parserOptions": {
+        "ecmaVersion": "latest", 
+        "sourceType": "module"
+    },
+    "plugins": [
+        "no-undef-class-this"
+    ],
+    "rules": {
+      //"prettier/prettier": "error",
+      "no-unused-vars": "warn",
+      "no-console": "warn",
+      "no-unused-expressions" : "warn",
+      "no-unused-labels" : "off",
+      "no-var": "warn",
+      "no-undef": "warn",
+      "no-undef-class-this/no-undef-class-this": "warn",
+      "no-const-assign": "error",
+      "no-else-return":"warn",
+      "prefer-arrow-callback":"warn",
+      //"object-curly-spacing":"warn",
+      "no-duplicate-imports":"warn"
+    }
+}
