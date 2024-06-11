@@ -1,6 +1,7 @@
 const jwt = require('jsonwebtoken')
 const statusCode = require('../utils/http-response').httpStatus_keyValue
-const User = require('../models/users.model')
+const User = require('../models/users.model') // mongo
+const db = require('../db/db') // postgre
 const throw_err = require('../utils/throw-err')
 
 module.exports = async (req, res, next) => {
@@ -19,11 +20,14 @@ module.exports = async (req, res, next) => {
         }
 
         // * ----- USING MONGO WITH MONGOOSE CHECKING
-        const user = await User.findById(decode_token.userId)
-        if(!user){
-            throw_err('Token Not Valid', statusCode['401_unauthorized'])
-        }
+        // const user = await User.findById(decode_token.userId)
         // * ----- ----- ----- ----- ----- ----- ----- 
+
+        // ! ----- USING POSTGRE CHECKING
+        const user = (await db.query('SELECT id, username, name, role, is_active FROM users WHERE id = $1', [decode_token.userId])).rows[0]
+        // ! ----- ----- ----- ----- ----- ----- ----- 
+
+        if(!user) throw_err('Token Not Valid', statusCode['401_unauthorized'])
 
         req.userId = decode_token.userId
         req.username = user.username

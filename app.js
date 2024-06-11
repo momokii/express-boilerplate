@@ -6,7 +6,9 @@ const bodyParser = require('body-parser')
 const yamljs = require('yamljs')
 const swaggerUI = require('swagger-ui-express')
 const morgan = require('morgan')
-const mongoose = require('mongoose') 
+
+const mongoose = require('mongoose') // using mongo
+const db = require('./db/db') // using postgres
 
 // * YAML API SPEC
 const openAPISpec = yamljs.load('./utils/swagger.yaml')
@@ -72,7 +74,13 @@ app.use((err, req, res, next) => {
 async function startServer(){
     try{
         // * USING MONGODB WITH MONGOOSE CONNECTION CHECKING
-        await mongoose.connect(process.env.MONGODB_URI)
+        // await mongoose.connect(process.env.MONGODB_URI)
+        // console.log('Connected to mongodb database')
+
+        // * USING POSTGRESQL
+        const conn = await db.connect()
+        console.log('Connected to postgresql database')
+        conn.release()
 
         server = app.listen(PORTS)
         console.log('Connected, see swagger documentation on http://localhost:' + PORTS + '/api-docs')
