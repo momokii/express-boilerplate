@@ -14,13 +14,13 @@ exports.login = async (req, res, next) => {
         const password = req.body.password
 
         // * ----- USING MONGO WITH MONGOOSE CHECKING
-        // const user = await User.findOne({
-        //     username: username
-        // })
+        const user = await User.findOne({
+            username: username
+        })
         // * ----- ----- ----- ----- ----- ----- ----- 
 
         // ! ----- USING POSTGRE CHECKING
-        let user = (await db.query('SELECT id, username, name, password, role, is_active FROM users WHERE username = $1', [username])).rows[0]
+        // let user = (await db.query('SELECT id, username, name, password, role, is_active FROM users WHERE username = $1', [username])).rows[0]
         // ! ----- ----- ----- ----- ----- ----- ----- 
 
         if(!user) throw_err('Wrong Username / Password', statusCode['400_bad_request'])
@@ -32,8 +32,8 @@ exports.login = async (req, res, next) => {
         
         // * jwt just contain userId with 30days expired time
         const access_token = jwt.sign({
-            // userId: user._id.toString() // use mongo
-            userId: user.id // use mongo // use postgre
+            userId: user._id.toString() // use mongo
+            // userId: user.id // use mongo // use postgre
         }, process.env.JWT_SECRET, {
             expiresIn: '30d'
         })

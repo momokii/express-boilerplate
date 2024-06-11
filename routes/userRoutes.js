@@ -22,12 +22,12 @@ router.post('/', is_auth, is_admin, [
         .custom((value, {req}) => {
             return (async () => {
                 // * ----- USING MONGO WITH MONGOOSE CHECKING
-                // const user = await User.findOne({
-                //     username : value
-                // })
+                const user = await User.findOne({
+                    username : value
+                })
                 // * ----- ----- ----- ----- ----- ----- ----- 
                 // ! ----- USING POSTGRE CHECKING
-                let user = (await db.query('SELECT id, username, name, password, role, is_active FROM users WHERE username = $1', [value])).rows[0]
+                // let user = (await db.query('SELECT id, username, name, password, role, is_active FROM users WHERE username = $1', [value])).rows[0]
                 // ! ----- ----- ----- ----- ----- ----- ----- 
                 if(user){
                     throw_err(

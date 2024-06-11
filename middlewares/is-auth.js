@@ -20,11 +20,11 @@ module.exports = async (req, res, next) => {
         }
 
         // * ----- USING MONGO WITH MONGOOSE CHECKING
-        // const user = await User.findById(decode_token.userId)
+        const user = await User.findById(decode_token.userId)
         // * ----- ----- ----- ----- ----- ----- ----- 
 
         // ! ----- USING POSTGRE CHECKING
-        const user = (await db.query('SELECT id, username, name, role, is_active FROM users WHERE id = $1', [decode_token.userId])).rows[0]
+        // const user = (await db.query('SELECT id, username, name, role, is_active FROM users WHERE id = $1', [decode_token.userId])).rows[0]
         // ! ----- ----- ----- ----- ----- ----- ----- 
 
         if(!user) throw_err('Token Not Valid', statusCode['401_unauthorized'])
